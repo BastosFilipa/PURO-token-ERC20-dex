@@ -1,15 +1,31 @@
 {
-  "name": "blockchain-developer-bootcamp",
+  "name": "PuRo Token",
   "version": "0.1.0",
+  "description": "Decentralized Ethereum Token Exchange",
+  "author": "filipa.s.bastos@gmail.com",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
+    "@openzeppelin/contracts": "^4.9.6",
+    "bootstrap": "^5.3.3",
+    "chai": "^4.3.4",
+    "chai-as-promised": "^7.1.1",
+    "chai-bignumber": "^3.1.0",
+    "dotenv": "^16.4.5",
+    "glob": "^11.0.0",
+    "react": "^18.2.0",
+    "react-apexcharts": "^1.4.1",
+    "react-bootstrap": "^2.10.4",
+    "react-dom": "^18.2.0",
+    "react-redux": "^9.1.2",
+    "react-scripts": "^5.0.1",
+    "redux": "^5.0.1",
+    "reselect": "^5.1.1",
+    "solidity-coverage": "^0.8.12",
+    "truffle-flattener": "^1.2.11",
+    "truffle-hdwallet-provider-privkey": "^0.0.4",
+    "web-vitals": "^4.2.2",
+    "web3": "^1.5.0",
+    "web3-provider-engine": "^16.0.8"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -18,21 +34,20 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "extends": "react-app"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "mocha": "^10.7.0",
+    "prettier": "^3.3.3",
+    "truffle": "^5.11.5"
   }
 }
