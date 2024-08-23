@@ -61,7 +61,7 @@ contract Exchange {
         uint256 timestamp;
     }
 
-    constructor (address _feeAccount, uint256 _feePercent) public {
+    constructor (address _feeAccount, uint256 _feePercent) {
         feeAccount = _feeAccount;
         feePercent = _feePercent;
     }
@@ -102,38 +102,38 @@ contract Exchange {
         return tokens[_token][_user];
     }
 
-function makeOrder(address _tokenGet, uint256 _amountGet, address _tokenGive, uint256 _amountGive) public {
-    orderCount = orderCount.add(1);
-    orders[orderCount] = _Order(orderCount, msg.sender, _tokenGet, _amountGet, _tokenGive, _amountGive, block.timestamp);
-    emit Order(orderCount, msg.sender, _tokenGet, _amountGet, _tokenGive, _amountGive, block.timestamp);
-}
+    function makeOrder(address _tokenGet, uint256 _amountGet, address _tokenGive, uint256 _amountGive) public {
+        orderCount = orderCount.add(1);
+        orders[orderCount] = _Order(orderCount, msg.sender, _tokenGet, _amountGet, _tokenGive, _amountGive, block.timestamp);
+        emit Order(orderCount, msg.sender, _tokenGet, _amountGet, _tokenGive, _amountGive, block.timestamp);
+    }
  
-function cancelOrder(uint256 _id) public{
-    _Order storage _order = orders[_id];
-    require(address(_order.user) == msg.sender);
-    require(_order.id == _id); // The order must exist
-    orderCancelled[_id] = true;
-    emit Cancel(_order.id, _order.user, _order.tokenGet, _order.amountGet, _order.tokenGive, _order.amountGive, block.timestamp);
-}
-function fillOrder(uint256 _id) public {
-    require(_id > 0 && _id <= orderCount);
-    require(!orderFilled[_id]);
-    require(!orderCancelled[_id]);
-    _Order storage _order = orders[_id];
-    _trade(_order.id, _order.user, _order.tokenGet, _order.amountGet, _order.tokenGive, _order.amountGive);
-    orderFilled[_order.id] = true;
-} 
-     
-function _trade(uint256 _orderID, address _user, address _tokenGet, uint _amountGet, address _tokenGive, uint _amountGive) internal {
-    uint256 _feeAmount = _amountGive.mul(feePercent).div(100);
+    function cancelOrder(uint256 _id) public{
+        _Order storage _order = orders[_id];
+        require(address(_order.user) == msg.sender);
+        require(_order.id == _id); // The order must exist
+        orderCancelled[_id] = true;
+        emit Cancel(_order.id, _order.user, _order.tokenGet, _order.amountGet, _order.tokenGive, _order.amountGive, block.timestamp);
+    }
+    function fillOrder(uint256 _id) public {
+        require(_id > 0 && _id <= orderCount);
+        require(!orderFilled[_id]);
+        require(!orderCancelled[_id]);
+        _Order storage _order = orders[_id];
+        _trade(_order.id, _order.user, _order.tokenGet, _order.amountGet, _order.tokenGive, _order.amountGive);
+        orderFilled[_order.id] = true;
+    } 
+        
+    function _trade(uint256 _orderID, address _user, address _tokenGet, uint _amountGet, address _tokenGive, uint _amountGive) internal {
+        uint256 _feeAmount = _amountGive.mul(feePercent).div(100);
 
-    tokens[_tokenGet][msg.sender] = tokens[_tokenGet][msg.sender].sub(_amountGet.add(_feeAmount));
-    tokens[_tokenGet][_user] = tokens[_tokenGet][_user].add(_amountGet);
-    tokens[_tokenGet][feeAccount] = tokens[_tokenGet][feeAccount].add(_feeAmount);
-    tokens[_tokenGive][_user] = tokens[_tokenGive][_user].sub(_amountGive);
-    tokens[_tokenGive][msg.sender] = tokens[_tokenGive][msg.sender].add(_amountGive);
+        tokens[_tokenGet][msg.sender] = tokens[_tokenGet][msg.sender].sub(_amountGet.add(_feeAmount));
+        tokens[_tokenGet][_user] = tokens[_tokenGet][_user].add(_amountGet);
+        tokens[_tokenGet][feeAccount] = tokens[_tokenGet][feeAccount].add(_feeAmount);
+        tokens[_tokenGive][_user] = tokens[_tokenGive][_user].sub(_amountGive);
+        tokens[_tokenGive][msg.sender] = tokens[_tokenGive][msg.sender].add(_amountGive);
 
-    emit Trade(_orderID, _user, _tokenGet, _amountGet, _tokenGive, _amountGive, msg.sender, block.timestamp);
-}
+        emit Trade(_orderID, _user, _tokenGet, _amountGet, _tokenGive, _amountGive, msg.sender, block.timestamp);
+    }
 
 }
